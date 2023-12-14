@@ -3,40 +3,40 @@ import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
 
 export default function SignUp() {
-  const [formData, setFormData]= useState({});
+  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error , setError] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  
-  const handleChange=(e)=>{
+
+  const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]:e.target.value,
+      [e.target.id]: e.target.value,
     });
   };
-  
-  const handleSubmit = async (e)=>{
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers:{
-          'Content-Type':'application/json',
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
       console.log(data);
-      if(data.success === false){
+      if (data.success === false) {
         setLoading(false);
         setError(data.message);
         return;
       }
       setLoading(false);
       setError(null);
-      navigate('/sign-in');
-    }catch (error) {
+      navigate("/sign-in");
+    } catch (error) {
       setLoading(false);
       setError(error.message);
     }
@@ -67,19 +67,20 @@ export default function SignUp() {
           id="password"
           onChange={handleChange}
         />
-        <button disabled={loading} className="bg-slate-600 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-70 ">
-        {loading?'Loading':'Sign Up'}
+        <button
+          disabled={loading}
+          className="bg-slate-600 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-70 "
+        >
+          {loading ? "Loading" : "Sign Up"}
         </button>
-        <OAuth/>
+        <OAuth />
       </form>
       <div className="flex mt-4 gap-2">
-      <p>
-        have an account 
-      </p>
-        <Link to={'/sign-in'} >
+        <p>have an account</p>
+        <Link to={"/sign-in"}>
           <span className=" text-blue-700"> sign in</span>
         </Link>
-        {error && <p className="text-red-500 mt-7">{error}</p> }
+        {error && <p className="text-red-500 mt-7">{error}</p>}
       </div>
     </div>
   );

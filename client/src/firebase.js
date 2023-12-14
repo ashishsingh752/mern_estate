@@ -6,8 +6,7 @@ const firebaseConfig = {
   projectId: "fullstackproject-20e32",
   storageBucket: "fullstackproject-20e32.appspot.com",
   messagingSenderId: "273897815257",
-  appId: "1:273897815257:web:9342efc12c8fd204c792c8"
+  appId: "1:273897815257:web:9342efc12c8fd204c792c8",
 };
-
 
 export const app = initializeApp(firebaseConfig);

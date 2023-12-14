@@ -3,7 +3,6 @@ import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
-
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -47,8 +46,7 @@ export const google = async (req, res, next) => {
         .cookie("access_token", token, { httpOnly: true })
         .status(200)
         .json(rest);
-    } 
-    else {
+    } else {
       const generatePassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
@@ -69,7 +67,6 @@ export const google = async (req, res, next) => {
         .status(202)
         .json(rest);
     }
-
   } catch (error) {
     next(error);
   }
