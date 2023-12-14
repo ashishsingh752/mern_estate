@@ -16,6 +16,7 @@ export default function SignIn() {
           placeholder="Password"
           className=" p-3 rounded-lg"
           id="password"
+
         />
         <button className="bg-slate-600 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-70 ">
           sign in
