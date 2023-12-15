@@ -12,12 +12,13 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-  // deleteUserFailure,
-  // deleteUserStart,
-  // deleteUserSuccess,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
   // signOutUserStart,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { current } from "@reduxjs/toolkit";
 // import { Link } from 'react-router-dom';
 
 export default function Profile() {
@@ -90,6 +91,28 @@ export default function Profile() {
     }
   };
 
+  const handleDeleteUser= async(e)=>{
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, 
+      {
+        method: 'DELETE',
+        
+      });
+      const data = await res.json();
+      if(data.success===false){
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+      
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))      
+    }
+  }
+
+
+
   console.log(formData);
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -155,7 +178,7 @@ export default function Profile() {
       </form>
 
       <div className="flex justify-between mt-5 font-semibold ">
-        <span className="text-red-700 cursor-pointer ">Delete account</span>
+        <span onClick={handleDeleteUser} className="text-red-700 cursor-pointer ">Delete account</span>
         <span className="text-red-700 cursor-pointer ">Sign Out</span>
       </div>
 
