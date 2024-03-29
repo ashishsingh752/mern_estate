@@ -10,12 +10,13 @@ export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
   const [saleListings, setSaleListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
+  const [take, setTake] = useState(3); // State for controlling the number of items to display in screen
   SwiperCore.use([Navigation]);
-  console.log(offerListings);
+
   useEffect(() => {
     const fetchOfferListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?offer=true&limit=3');
+        const res = await fetch(`/api/listing/get?offer=true&limit=${take}`);
         const data = await res.json();
         setOfferListings(data);
         fetchRentListings();
@@ -23,9 +24,10 @@ export default function Home() {
         console.log(error);
       }
     };
+
     const fetchRentListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?type=rent&limit=3');
+        const res = await fetch(`/api/listing/get?type=rent&limit=${take}`);
         const data = await res.json();
         setRentListings(data);
         fetchSaleListings();
@@ -36,15 +38,34 @@ export default function Home() {
 
     const fetchSaleListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?type=sale&limit=3');
+        const res = await fetch(`/api/listing/get?type=sale&limit=${take}`);
         const data = await res.json();
         setSaleListings(data);
       } catch (error) {
-        log(error);
+        console.log(error);
       }
     };
     fetchOfferListings();
-  }, []);
+  }, [take]); // Include 'take' in the dependency array
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1045) {
+        setTake(4);
+      } else {
+        setTake(3);
+      }
+    };
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Clean up function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Empty dependency array to run only once when component mounts
+
   return (
     <div>
       {/* top */}
@@ -73,14 +94,13 @@ export default function Home() {
         {offerListings &&
           offerListings.length > 0 &&
           offerListings.map((listing) => (
-            <SwiperSlide>
+            <SwiperSlide key={listing._id}>
               <div
                 style={{
                   background: `url(${listing.imageUrls[0]}) center no-repeat`,
                   backgroundSize: 'cover',
                 }}
                 className='h-[500px]'
-                key={listing._id}
               ></div>
             </SwiperSlide>
           ))}
@@ -91,11 +111,11 @@ export default function Home() {
       <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
         {offerListings && offerListings.length > 0 && (
           <div className=''>
-            <div className='my-3'>
+            <div className='my-3 mx-12'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent offers</h2>
               <Link className='text-sm text-blue-800 hover:underline' to={'/search?offer=true'}>Show more offers</Link>
             </div>
-            <div className='flex flex-wrap gap-4'>
+            <div className='flex justify-center flex-wrap gap-4'>
               {offerListings.map((listing) => (
                 <ListingItem listing={listing} key={listing._id} />
               ))}
@@ -104,11 +124,11 @@ export default function Home() {
         )}
         {rentListings && rentListings.length > 0 && (
           <div className=''>
-            <div className='my-3'>
+            <div className='my-3 mx-12'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent places for rent</h2>
               <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=rent'}>Show more places for rent</Link>
             </div>
-            <div className='flex flex-wrap gap-4'>
+            <div className='flex justify-center flex-wrap gap-4'>
               {rentListings.map((listing) => (
                 <ListingItem listing={listing} key={listing._id} />
               ))}
@@ -117,11 +137,11 @@ export default function Home() {
         )}
         {saleListings && saleListings.length > 0 && (
           <div className=''>
-            <div className='my-3'>
+            <div className='my-3 mx-12'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent places for sale</h2>
               <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=sale'}>Show more places for sale</Link>
             </div>
-            <div className='flex flex-wrap gap-4'>
+            <div className='flex justify-center flex-wrap gap-4'>
               {saleListings.map((listing) => (
                 <ListingItem listing={listing} key={listing._id} />
               ))}
@@ -129,9 +149,6 @@ export default function Home() {
           </div>
         )}
       </div>
-      <footer className='text-red-500 text-center '>
-        made with love 
-      </footer>
     </div>
   );
 }
