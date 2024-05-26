@@ -21,7 +21,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("https://localhost3000/api/auth/signup", {
+      const res = await fetch("/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export default function SignUp() {
       <div className="w-full max-w-sm px-8 py-6 bg-white rounded-lg shadow-md">
         <h3 className="text-2xl font-bold text-center">MyHome</h3>
         <p className="text-gray-700 text-base mt-4 mb-3">
-          Let's get started by creating your account
+          Don&apos;t get started by creating your account
         </p>
         <div className="w-full mb-0.5">
           <OAuth />

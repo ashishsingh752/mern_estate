@@ -28,7 +28,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch("http://localhost:3000/api/auth/signin", {
+      const res = await fetch("/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +126,7 @@ export default function SignIn() {
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-500">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link to={"/sign-up"} className="text-blue-600 hover:underline focus:outline-none">
             Sign up
           </Link>
