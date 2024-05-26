@@ -14,7 +14,7 @@ export default function OAuth() {
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
       // console.log(result);
-      const res = await fetch("/auth/google", {
+      const res = await fetch("https://backendmyhome.onrender.com/auth/google", {
         method: "POST",
         headers: {
           "CONTENT-TYPE": "application/json",

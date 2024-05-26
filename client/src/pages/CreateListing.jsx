@@ -50,8 +50,8 @@ export default function CreateListing() {
           setImageUploadError(false);
           setUploading(false);
         })
-        .catch((err) => {
-          setImageUploadError('Image upload failed (2 mb max per image)');
+        .catch((error) => {
+          setImageUploadError('Image upload failed (2 mb max per image)', error);
           setUploading(false);
         });
     } else {
@@ -132,7 +132,7 @@ export default function CreateListing() {
         return setError('Discount price must be lower than regular price');
       setLoading(true);
       setError(false);
-      const res = await fetch('/listing/create', {
+      const res = await fetch('https://backendmyhome.onrender.com/listing/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ export default function CreateListing() {
       if (data.success === false) {
         setError(data.message);
       }
-      navigate(`/listing/${data._id}`);
+      // navigate(`/listing/${data._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
