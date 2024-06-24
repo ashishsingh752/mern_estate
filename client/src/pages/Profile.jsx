@@ -38,12 +38,13 @@ export default function Profile() {
     }
   }, [file]);
 
+  console.log(currentUser)
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+    
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -169,7 +170,7 @@ export default function Profile() {
         />
         <img
           onClick={() => fileRef.current.click()}
-          src={formData.avatar || currentUser.avatar}
+          src={currentUser.avatar || formData.avatar }
           alt='profile'
           className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
         />
